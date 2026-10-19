@@ -1,0 +1,5 @@
+/linear-cli
+/dist/
+*.test
+/coverage.out
+/.live-test/

@@ -1,0 +1,39 @@
+{
+  "retrieved_at": "2026-10-19T03:03:14.926746+00:00",
+  "sources": [
+    {
+      "url": "https://linear.app/developers/graphql.md",
+      "evidence": "Endpoint; PAT raw Authorization vs OAuth Bearer; HTTP-200 GraphQL errors; query/mutation examples.",
+      "retrieved_at": "2026-10-19T03:03:14.926746+00:00"
+    },
+    {
+      "url": "https://linear.app/developers/pagination",
+      "evidence": "Relay cursors first/after, hasNextPage/endCursor, includeArchived.",
+      "retrieved_at": "2026-10-19T03:03:14.926746+00:00"
+    },
+    {
+      "url": "https://linear.app/developers/rate-limiting",
+      "evidence": "Rate limit and complexity errors; no aggressive polling.",
+      "retrieved_at": "2026-10-19T03:03:14.926746+00:00"
+    },
+    {
+      "url": "https://api.linear.app/graphql",
+      "retrieved_at": "2026-10-19T03:02:29.790770+00:00",
+      "evidence": "Read-only introspection verified Query/Mutation and issue/comment/relation input field names."
+    },
+    {
+      "url": "https://api.linear.app/graphql",
+      "retrieved_at": "2026-10-19T03:17:16.896325+00:00",
+      "evidence": "Authorized live test through compiled CLI; both aliases valid; final archived fixture checks and cleanup verified.",
+      "fixture_summary": {
+        "created": 2,
+        "archived_and_verified": 2,
+        "remaining_test_comments": 0,
+        "remaining_test_relations": 0,
+        "remaining_parent_links": 0,
+        "private_identifiers_omitted": true
+      },
+      "report": "docs/verification.md"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_call:
+    inputs:
+      ref:
+        description: Exact commit to test when called by the release workflow
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            extension: ""
+          - os: macos-14
+            extension: ""
+          - os: windows-latest
+            extension: ".exe"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Check formatting
+        run: |
+          files="$(gofmt -l *.go)"
+          if [ -n "$files" ]; then
+            printf 'Unformatted Go files:\n%s\n' "$files"
+            exit 1
+          fi
+      - name: Run offline tests
+        run: go test -count=1 -cover ./...
+      - name: Run race detector
+        if: runner.os == 'Linux'
+        run: go test -race -count=1 ./...
+      - name: Vet
+        run: go vet ./...
+      - name: Build and smoke-test native binary
+        env:
+          EXTENSION: ${{ matrix.extension }}
+        run: |
+          mkdir -p dist
+          go build -trimpath -o "dist/linear-cli${EXTENSION}" .
+          "./dist/linear-cli${EXTENSION}" --version
+          "./dist/linear-cli${EXTENSION}" --skills > dist/agent-guide.md
+          cmp skills/linear-cli.md dist/agent-guide.md
+          "./dist/linear-cli${EXTENSION}" create --help
