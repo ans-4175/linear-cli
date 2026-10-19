@@ -47,4 +47,15 @@ Credentials were read in place and were not embedded in source or binaries.
 The CI workflow runs native offline tests/build smoke checks on macOS, Linux,
 and Windows, plus the race detector on Linux. The Release workflow invokes
 those checks against the exact tagged commit before producing six archives and
-SHA-256 checksums. Inspect the repository's Actions runs for current results.
+SHA-256 checksums.
+
+Release **v0.1.0** was published on 2026-10-19:
+
+- [Release workflow](https://github.com/ans-4175/linear-cli/actions/runs/39194946940): all jobs passed, including native tests on all three operating systems and all six cross-builds.
+- [Published release](https://github.com/ans-4175/linear-cli/releases/tag/v0.1.0): six platform archives plus `SHA256SUMS.txt`, not a draft or prerelease.
+- All six archives were downloaded and their SHA-256 hashes verified locally.
+- Binary headers match the target OS/CPU for all six downloads.
+- The downloaded macOS/arm64 binary passed `--version` and `--skills` smoke tests; the local CLI was replaced with that verified release binary.
+- Retrieval/verification timestamp: 2026-10-19T03:32:31.867001+00:00.
+
+Binaries are unsigned. ARM64 Windows/Linux builds were cross-compiled, not executed on those target architectures.
