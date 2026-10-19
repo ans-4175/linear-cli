@@ -1,0 +1,2 @@
+# Keep source and embedded guides identical across platform checkouts.
+* text=auto eol=lf
